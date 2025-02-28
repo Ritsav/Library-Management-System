@@ -1,9 +1,9 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-namespace func
-{
-    char toUpperCase(char);
-}
+#include<stdio.h>
+#include<stdlib.h>
+
+char toUpperCase(char);
 
 #endif

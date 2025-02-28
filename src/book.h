@@ -1,25 +1,20 @@
-#ifndef BOOKINFO_H
-#define BOOKINFO_H
+#ifndef BOOK_H
+#define BOOK_H
 
-#include<iostream>
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
 
-class Book{
-public:
-    Book(std::string name, std::string author, std::string genre, int yearOfPublication) :
-        name_ { name },
-        author_ { author },
-        genre_ { genre },
-        yearOfPublication_ { yearOfPublication }
-    {  }
+typedef struct Book
+{
+    int yearOfPublication;
+    char name[50];
+    char genre[50];
+    char author[50];
+} Book;
 
-    void displayBookInfo() const;
-    void updateCount();
-private:
-    int yearOfPublication_;
-    std::string name_;
-    std::string genre_;
-    std::string author_;
-    int count_; // To count the no of same books
-};
+Book* initBook();
+void displayBookInfo(Book*);
+char getInitialChar(Book*);
 
 #endif
