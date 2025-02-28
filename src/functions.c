@@ -1,6 +1,6 @@
 #include "functions.h"
 
-char func::toUpperCase(char ch)
+char toUpperCase(char ch)
 {
     // Check if char is already in Uppercase
     if(ch >= 'A' && ch <= 'Z'){
@@ -12,6 +12,7 @@ char func::toUpperCase(char ch)
         ch -= 32;
         return ch;
     }
-    
-    throw "The starting char of book title is not an alphabet";
+
+    printf("\n\nRunTime Error: The starting char of the book title is not an alphabet!!\n\n");
+    exit(0);
 }
