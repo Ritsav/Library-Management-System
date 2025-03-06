@@ -5,9 +5,14 @@ struct Node{
     struct Node *left;
     struct Node *right;
     int height;
-}
+};
 int height(struct Node *N){
     if(N==NULL)
         return 0;
     return N->height;
+}
+int heightbalance(struct Node *N){
+    if(N==NULL)
+        return 0;
+    return height(N->left)-height(N->right);
 }
