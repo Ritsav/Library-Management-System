@@ -14,12 +14,12 @@ int hashFunction(char key)
     return (key % 26);
 }
 
-void insertBook(Book* book)
-{
-    int value = hashFunction(getInitialChar(book));
+// void insertBook(Book* book)
+// {
+//     int value = hashFunction(getInitialChar(book));
 
-    BookMap->map[value];
-}
+//     BookMap->map[value];
+// }
 
 void listAllBooks(Book* book)
 {
@@ -28,4 +28,4 @@ void listAllBooks(Book* book)
     }
 }
 
-void listAllBooksInBucket();
+// void listAllBooksInBucket();

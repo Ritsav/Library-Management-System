@@ -9,7 +9,7 @@
 // BookMap struct: Key based on starting alphabet
 typedef struct BookHashMap
 {
-    BookTree* map[26];
+    // BookTree* map[26];
 } BookHashMap;
 
 // Functions for BookMap
@@ -21,7 +21,7 @@ void listAllBooksInBucket();
 // UserMap struct: Key based on starting alphabet
 typedef struct UserHashMap
 {
-    UserTree* map[26];
+    // UserTree* map[26];
 } UserHashMap;
 
 #endif
