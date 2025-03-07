@@ -11,3 +11,7 @@ AVLBook* insertBook(AVLBook*, Book*);
 AVLBook* deleteBook(AVLBook*, Book*);
 AVLBook* searchBook(AVLBook*, Book*);
 void displayBookTree(AVLBook*);
+static int max(int a, int b);
+static AVLBook* minValueNode(AVLBook* node);
+static int getBalanceFactor(AVLBook* node);
+static void updateHeight(AVLBook* node);
