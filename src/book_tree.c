@@ -72,7 +72,7 @@ AVLBook* insertBook(AVLBook* node, Book* book) {
     else if (cmp > 0)
         node->right = insertBook(node->right, book);
     else
-        return node; // Duplicate entries not allowed
+        return node; // Duplicate entries not allowed if cmp == 0
 
     updateHeight(node);
 
@@ -177,7 +177,7 @@ AVLBook* searchBook(AVLBook* root, Book* book) {
         return searchBook(root->right, book);
 }
 
-void displayBookTree(AVLBook* root) {
+void displayBookTree(AVLBook* root) { // inorder traversal
     if (root != NULL) {
         displayBookTree(root->left);
         printf("Book: %s (Height: %d)\n", root->book->name, root->height);
