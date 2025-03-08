@@ -1,12 +1,4 @@
-
-
 #include "book_tree.h"
-#include "book.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-
 
 // Actual implementation
 int max(int a, int b) {
@@ -63,7 +55,7 @@ AVLBook* leftRotate(AVLBook* x) {
     return y;
 }
 
-AVLBook* insertBook(AVLBook* node, Book* book) {
+AVLBook* insertBookInTree(AVLBook* node, Book* book) {
     if (node == NULL) return createBookNode(book);
 
     int cmp = strcmp(book->name, node->book->name);
@@ -72,7 +64,7 @@ AVLBook* insertBook(AVLBook* node, Book* book) {
     else if (cmp > 0)
         node->right = insertBook(node->right, book);
     else
-        return node; // Duplicate entries not allowed
+        return; // Duplicate entries not allowed
 
     updateHeight(node);
 
@@ -101,7 +93,7 @@ AVLBook* insertBook(AVLBook* node, Book* book) {
     return node;
 }
 
-AVLBook* deleteBook(AVLBook* root, Book* book) {
+AVLBook* deleteBookInTree(AVLBook* root, Book* book) {
     if (root == NULL) return root;
 
     int cmp = strcmp(book->name, root->book->name);
@@ -165,8 +157,11 @@ AVLBook* minValueNode(AVLBook* node) {
     return current;
 }
 
-AVLBook* searchBook(AVLBook* root, Book* book) {
-    if (root == NULL) return NULL;
+void searchBookInTree(AVLBook* root, Book* book) {
+    if (root == NULL){
+        printf("\n\nBook not found in library!\n\n");
+        return;
+    }
     
     int cmp = strcmp(book->name, root->book->name);
     if (cmp == 0)
@@ -183,4 +178,14 @@ void displayBookTree(AVLBook* root) {
         printf("Book: %s (Height: %d)\n", root->book->name, root->height);
         displayBookTree(root->right);
     }
+}
+
+void freeBookTree(AVLBook* root){
+    if(root == NULL) return;
+
+    freeBookTree(root->left);
+
+    free(root);
+
+    freeBookTree(root->right);
 }

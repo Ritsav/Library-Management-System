@@ -1,8 +1,5 @@
 #include "hashmap.h"
 
-BookHashMap *BookMap;
-UserHashMap *UserMap;
-
 int hashFunction(char key)
 {
     key = toUpperCase(key);   
@@ -14,18 +11,29 @@ int hashFunction(char key)
     return (key % 26);
 }
 
-// void insertBook(Book* book)
-// {
-//     int value = hashFunction(getInitialChar(book));
+void insertBook(BookHashMap* hashmap, Book* book)
+{
+    // HashMap needs to be allocated in main and sent over
+    int value = hashFunction(getInitialChar(book));
 
-//     BookMap->map[value];
-// }
+    if(hashmap->map[value] == NULL){
+        AVLBook* root = (AVLBook*)malloc(sizeof(AVLBook));
+        hashmap->map[value] = root;
+    }
 
-void listAllBooks(Book* book)
+    insertBookInTree(hashmap->map[value], book);
+}
+
+void listAllBooks(BookHashMap* hashmap)
 {
     for(int i = 0; i < 26; i++){
-        
+        printf("\n");
+        printf("For books starting from letter %c:\n", i + 'A');
+        displayBookTree(hashmap->map[i]);
+        printf("\n\n");
     }
 }
 
-// void listAllBooksInBucket();
+void listAllBooksInBucket(BookHashMap* hashmap, char letter){
+    displayBookTree(hashmap->map[hashFunction(letter)]);
+};
