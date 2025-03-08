@@ -11,7 +11,7 @@ int hashFunction(char key)
     return (key % 26);
 }
 
-void insertBook(BookHashMap* hashmap, Book* book)
+void insertBookInMap(BookHashMap* hashmap, Book* book)
 {
     // HashMap needs to be allocated in main and sent over
     int value = hashFunction(getInitialChar(book));
@@ -24,7 +24,7 @@ void insertBook(BookHashMap* hashmap, Book* book)
     insertBookInTree(hashmap->map[value], book);
 }
 
-void listAllBooks(BookHashMap* hashmap)
+void listAllBooksInMap(BookHashMap* hashmap)
 {
     for(int i = 0; i < 26; i++){
         printf("\n");

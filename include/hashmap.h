@@ -14,10 +14,11 @@ typedef struct BookHashMap
     AVLBook* map[26];
 } BookHashMap;
 
-// Functions for BookMap
 int hashFunction(char);
-void insertBook(BookHashMap* ,Book*);
-void listAllBooks(BookHashMap*);
+
+// Functions for BookMap
+void insertBookInMap(BookHashMap* ,Book*);
+void listAllBooksInMap(BookHashMap*);
 void listAllBooksInBucket(BookHashMap*, char);
 
 // UserMap struct: Key based on starting alphabet

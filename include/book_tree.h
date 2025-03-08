@@ -17,9 +17,9 @@ struct avl_book{
 typedef struct avl_book AVLBook;
 
 // Functions to perform Operations in the AVL tree
-AVLBook* insertBookInTree(AVLBook*, Book*);
-AVLBook* deleteBookInTree(AVLBook*, Book*);
-AVLBook* searchBookInTree(AVLBook*, Book*);
+void insertBookInTree(AVLBook**, Book*);
+void deleteBookInTree(AVLBook**, Book*);
+void searchBookInTree(AVLBook*, Book*);
 void displayBookTree(AVLBook*);
 void freeBookTree(AVLBook*);
 

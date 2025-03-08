@@ -55,99 +55,101 @@ AVLBook* leftRotate(AVLBook* x) {
     return y;
 }
 
-AVLBook* insertBookInTree(AVLBook* node, Book* book) {
-    if (node == NULL) return createBookNode(book);
+void insertBookInTree(AVLBook** node, Book* book) {
+    if (*node == NULL) {
+        *node = createBookNode(book); // Set the new node directly
+        return;
+    }
 
-    int cmp = strcmp(book->name, node->book->name);
+    int cmp = strcmp(book->name, (*node)->book->name);
     if (cmp < 0)
-        node->left = insertBook(node->left, book);
+        insertBookInTree(&(*node)->left, book);  // Pass address of left child
     else if (cmp > 0)
-        node->right = insertBook(node->right, book);
+        insertBookInTree(&(*node)->right, book);  // Pass address of right child
     else
         return; // Duplicate entries not allowed
 
-    updateHeight(node);
+    updateHeight(*node);
 
-    int balance = getBalanceFactor(node);
+    int balance = getBalanceFactor(*node);
 
     // Left Left Case
-    if (balance > 1 && strcmp(book->name, node->left->book->name) < 0)
-        return rightRotate(node);
+    if (balance > 1 && strcmp(book->name, (*node)->left->book->name) < 0)
+        *node = rightRotate(*node);
 
     // Right Right Case
-    if (balance < -1 && strcmp(book->name, node->right->book->name) > 0)
-        return leftRotate(node);
+    if (balance < -1 && strcmp(book->name, (*node)->right->book->name) > 0)
+        *node = leftRotate(*node);
 
     // Left Right Case
-    if (balance > 1 && strcmp(book->name, node->left->book->name) > 0) {
-        node->left = leftRotate(node->left);
-        return rightRotate(node);
+    if (balance > 1 && strcmp(book->name, (*node)->left->book->name) > 0) {
+        (*node)->left = leftRotate((*node)->left);
+        *node = rightRotate(*node);
     }
 
     // Right Left Case
-    if (balance < -1 && strcmp(book->name, node->right->book->name) < 0) {
-        node->right = rightRotate(node->right);
-        return leftRotate(node);
+    if (balance < -1 && strcmp(book->name, (*node)->right->book->name) < 0) {
+        (*node)->right = rightRotate((*node)->right);
+        *node = leftRotate(*node);
     }
-
-    return node;
 }
 
-AVLBook* deleteBookInTree(AVLBook* root, Book* book) {
-    if (root == NULL) return root;
+void deleteBookInTree(AVLBook** root, Book* book) {
+    if (*root == NULL) return;
 
-    int cmp = strcmp(book->name, root->book->name);
+    int cmp = strcmp(book->name, (*root)->book->name);
     if (cmp < 0)
-        root->left = deleteBook(root->left, book);
+        deleteBookInTree(&(*root)->left, book);  // Pass address of left child
     else if (cmp > 0)
-        root->right = deleteBook(root->right, book);
+        deleteBookInTree(&(*root)->right, book);  // Pass address of right child
     else {
         // Node with only one child or no child
-        if ((root->left == NULL) || (root->right == NULL)) {
-            AVLBook* temp = root->left ? root->left : root->right;
+        if ((*root)->left == NULL || (*root)->right == NULL) {
+            AVLBook* temp = (*root)->left ? (*root)->left : (*root)->right;
 
             if (temp == NULL) {
-                temp = root;
-                root = NULL;
+                temp = *root;
+                *root = NULL;
             } else {
-                *root = *temp;
+                *(*root) = *temp;
             }
+
+            // Free the book data also
+            free((*root)->book);
             free(temp);
         } else {
             // Node with two children
-            AVLBook* temp = minValueNode(root->right);
-            root->book = temp->book;
-            root->right = deleteBook(root->right, temp->book);
+            AVLBook* temp = minValueNode((*root)->right);
+            (*root)->book = temp->book;
+            deleteBookInTree(&(*root)->right, temp->book);
         }
     }
 
-    if (root == NULL) return root;
+    if (*root == NULL) return;
 
-    updateHeight(root);
+    updateHeight(*root);
 
-    int balance = getBalanceFactor(root);
+    int balance = getBalanceFactor(*root);
 
-    // Left Left
-    if (balance > 1 && getBalanceFactor(root->left) >= 0)
-        return rightRotate(root);
+    // Left Left Case
+    if (balance > 1 && getBalanceFactor((*root)->left) >= 0)
+        *root = rightRotate(*root);
 
-    // Left Right
-    if (balance > 1 && getBalanceFactor(root->left) < 0) {
-        root->left = leftRotate(root->left);
-        return rightRotate(root);
+    // Left Right Case
+    if (balance > 1 && getBalanceFactor((*root)->left) < 0) {
+        (*root)->left = leftRotate((*root)->left);
+        *root = rightRotate(*root);
     }
 
-    // Right Right
-    if (balance < -1 && getBalanceFactor(root->right) <= 0)
-        return leftRotate(root);
+    // Right Right Case
+    if (balance < -1 && getBalanceFactor((*root)->right) <= 0)
+        *root = leftRotate(*root);
 
-    // Right Left
-    if (balance < -1 && getBalanceFactor(root->right) > 0) {
-        root->right = rightRotate(root->right);
-        return leftRotate(root);
+    // Right Left Case
+    if (balance < -1 && getBalanceFactor((*root)->right) > 0) {
+        (*root)->right = rightRotate((*root)->right);
+        *root = leftRotate(*root);
     }
-
-    return root;
 }
 
 AVLBook* minValueNode(AVLBook* node) {
@@ -165,11 +167,11 @@ void searchBookInTree(AVLBook* root, Book* book) {
     
     int cmp = strcmp(book->name, root->book->name);
     if (cmp == 0)
-        return root;
+        displayBookInfo(book);
     else if (cmp < 0)
-        return searchBook(root->left, book);
+        searchBookInTree(root->left, book);
     else
-        return searchBook(root->right, book);
+        searchBookInTree(root->right, book);
 }
 
 void displayBookTree(AVLBook* root) {
@@ -185,6 +187,7 @@ void freeBookTree(AVLBook* root){
 
     freeBookTree(root->left);
 
+    free(root->book);
     free(root);
 
     freeBookTree(root->right);

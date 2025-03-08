@@ -16,3 +16,8 @@ char toUpperCase(char ch)
     printf("\n\nRunTime Error: The starting char of the book title is not an alphabet!!\n\n");
     exit(0);
 }
+
+bool avlGoLeft(AVLBook* bookInLeft, AVLBook* BookInRight)
+{
+
+};
