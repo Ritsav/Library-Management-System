@@ -4,6 +4,8 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<stdbool.h>
+#include "borrower_queue.h"
 
 typedef struct Book
 {
@@ -11,6 +13,9 @@ typedef struct Book
     char name[50];
     char genre[50];
     char author[50];
+    bool isAvailable;
+    BorrowerQueue* front;
+    BorrowerQueue* rear;
 } Book;
 
 Book* initBook();

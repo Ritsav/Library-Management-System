@@ -1,7 +1,12 @@
-#include "bookList.h"
+#include "book_list.h"
 
-void insertBookList(bookList* head, Book* book) {
-    bookList* current = head;
+void initBookList(BookList* start)
+{
+    start = NULL;
+}
+
+void insertBookList(BookList* start, Book* book) {
+    BookList* current = start;
     
     // Find last node
     while(current->next != NULL){
@@ -9,7 +14,7 @@ void insertBookList(bookList* head, Book* book) {
     }
 
     // Create and attach new node
-    bookList* newBook = malloc(sizeof(bookList));
+    BookList* newBook = malloc(sizeof(BookList));
     newBook->next = NULL;
     current->next = newBook;
 
@@ -17,10 +22,11 @@ void insertBookList(bookList* head, Book* book) {
 }
 
 // Simplified display
-void displayBookList(bookList* head) {
-    while(head != NULL) {
-        printf("%s -> ", head->bookName);
-        head = head->next;
+void displayBookList(BookList* start) {
+    BookList* current = start;
+    while(current != NULL) {
+        printf("%s -> ", current->bookName);
+        current = current->next;
     }
-    printf("NULL\n");
+    printf("\n");
 }

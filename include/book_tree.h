@@ -21,7 +21,7 @@ void insertBookInTree(AVLBook**, Book*);
 void deleteBookInTree(AVLBook**, Book*);
 void searchBookInTree(AVLBook*, Book*);
 void displayBookTree(AVLBook*);
-void freeBookTree(AVLBook*);
+void freeBookTree(AVLBook*); // Also frees the book
 
 // AVLTree Rebalancing Functions
 static int max(int a, int b);
