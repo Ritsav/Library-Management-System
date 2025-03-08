@@ -15,3 +15,4 @@ typedef struct User{
 void displayCatalog(User*);
 void displayUserInfo(User*);
 char getInitialChar(User*);
+User* initUser(); 
