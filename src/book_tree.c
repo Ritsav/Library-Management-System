@@ -178,7 +178,7 @@ Book* searchBookInTree(AVLBook* root, char bookName[]) {
         return searchBookInTree(root->right, bookName);  // Return recursive call result
 }
 
-void displayBookTree(AVLBook* root) {
+void displayBookTree(AVLBook* root) { // inorder traversal
     if (root != NULL) {
         displayBookTree(root->left);
         printf("\tBook: %s\t", root->book->name);
