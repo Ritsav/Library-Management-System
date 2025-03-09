@@ -44,7 +44,7 @@ int main() {
                 printf("5. Borrow Book\n");
                 printf("6. Return Book\n");
                 scanf("%d", &bookChoice);
-                getchar();  // Consume newline left by scanf
+                getchar();
 
                 switch(bookChoice){
                     case 1:
@@ -58,7 +58,6 @@ int main() {
                         }
 
                         initBook(&book);
-                        printf("HMMl");
                         insertBook(hashmap, book);
                         break;
                     
