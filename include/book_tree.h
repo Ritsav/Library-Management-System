@@ -14,18 +14,17 @@ typedef struct AVLBook{
     struct AVLBook* right;
     int height;
 } AVLBook;
-
 // Functions to perform Operations in the AVL tree
 void insertBookInTree(AVLBook**, Book*);
 void deleteBookInTree(AVLBook**, char[]);
 Book* searchBookInTree(AVLBook*, char[]);
 void displayBookTree(AVLBook*);
-int max(int a, int b);
-AVLBook* minValueNode(AVLBook* node);
-int getBalanceFactor(AVLBook* node);
-void updateHeight(AVLBook* node);
 void freeBookTree(AVLBook*); // Also frees the book
 
-
+// AVLTree Rebalancing Functions
+static int max(int a, int b);
+static AVLBook* minValueNode(AVLBook* node);
+static int getBalanceFactor(AVLBook* node);
+static void updateHeight(AVLBook* node);
 
 #endif
