@@ -100,54 +100,57 @@ void deleteBookInTree(AVLBook** root, char bookName[]) {
 
     int cmp = strcmp(bookName, (*root)->book->name);
     if (cmp < 0)
-        deleteBookInTree(&(*root)->left, bookName);  // Pass address of left child
+        deleteBookInTree(&(*root)->left, bookName);
     else if (cmp > 0)
-        deleteBookInTree(&(*root)->right, bookName);  // Pass address of right child
+        deleteBookInTree(&(*root)->right, bookName);
     else {
         // Node with only one child or no child
         if ((*root)->left == NULL || (*root)->right == NULL) {
             AVLBook* temp = (*root)->left ? (*root)->left : (*root)->right;
 
             if (temp == NULL) {
-                temp = *root;
+                free((*root)->book);  // Free the book data
+                free(*root);  // Free the node itself
                 *root = NULL;
             } else {
-                *(*root) = *temp;
+                **root = *temp;  // Copy contents of temp to root
+                free(temp);
             }
-
-            // Free the book data also
-            free((*root)->book);
-            free(temp);
         } else {
-            // Node with two children
+            // Node with two children: Get inorder successor
             AVLBook* temp = minValueNode((*root)->right);
-            (*root)->book = temp->book;
-            deleteBookInTree(&(*root)->right, temp->book);
+
+            // Properly allocate memory and copy book contents
+            Book* newBook = (Book*)malloc(sizeof(Book));
+            if (newBook == NULL) {
+                printf("Memory allocation failed\n");
+                return;
+            }
+            *newBook = *(temp->book);  // Deep copy book data
+
+            free((*root)->book);  // Free existing book data
+            (*root)->book = newBook;  // Assign newly allocated book
+
+            deleteBookInTree(&(*root)->right, temp->book->name);
         }
     }
 
     if (*root == NULL) return;
 
+    // Update height and balance the AVL tree
     updateHeight(*root);
 
     int balance = getBalanceFactor(*root);
 
-    // Left Left Case
+    // Balance the tree using AVL rotations
     if (balance > 1 && getBalanceFactor((*root)->left) >= 0)
         *root = rightRotate(*root);
-
-    // Left Right Case
-    if (balance > 1 && getBalanceFactor((*root)->left) < 0) {
+    else if (balance > 1 && getBalanceFactor((*root)->left) < 0) {
         (*root)->left = leftRotate((*root)->left);
         *root = rightRotate(*root);
-    }
-
-    // Right Right Case
-    if (balance < -1 && getBalanceFactor((*root)->right) <= 0)
+    } else if (balance < -1 && getBalanceFactor((*root)->right) <= 0)
         *root = leftRotate(*root);
-
-    // Right Left Case
-    if (balance < -1 && getBalanceFactor((*root)->right) > 0) {
+    else if (balance < -1 && getBalanceFactor((*root)->right) > 0) {
         (*root)->right = rightRotate((*root)->right);
         *root = leftRotate(*root);
     }
@@ -162,7 +165,6 @@ AVLBook* minValueNode(AVLBook* node) {
 
 Book* searchBookInTree(AVLBook* root, char bookName[]) {
     if (root == NULL) {
-        printf("\n\nBook not found in library!\n\n");
         return NULL;
     }
     
@@ -179,7 +181,7 @@ Book* searchBookInTree(AVLBook* root, char bookName[]) {
 void displayBookTree(AVLBook* root) {
     if (root != NULL) {
         displayBookTree(root->left);
-        printf("\tBook: %s\t", root->book->name, root->height);
+        printf("\tBook: %s\t", root->book->name);
         displayBookTree(root->right);
     }
 }

@@ -49,7 +49,7 @@ void showBookStatus(Book* book){
 // Function to display Book
 void displayBookInfo(Book* book)
 {
-    printf("<----- Book Info ----->\n");
+    printf("\n<----- Book Info ----->\n");
     printf("Title: %s\n", book->name);
     printf("Author: %s\n", book->author);
     printf("Genre: %s\n", book->genre);

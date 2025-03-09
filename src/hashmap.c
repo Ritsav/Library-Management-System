@@ -30,17 +30,23 @@ void insertBookInMap(BookHashMap* hashmap, Book* book)
 
 void listAllBooksInMap(BookHashMap* hashmap)
 {
+    int counter = 0; // To count if there are no books in the library
     for(int i = 0; i < 26; i++){
-        printf("\n");
-        printf("For books starting from letter %c:\n", i + 'A');
-
         if(hashmap->map[i] == NULL){
             continue;
         }
 
+        printf("\n");
+        printf("For books starting from letter %c:\n", i + 'A');
+
         displayBookTree(hashmap->map[i]);
         printf("\n");
     }
+
+    if(counter == 0){
+        printf("Currently no books in the library!");
+    }
+
     printf("\n\n");
 }
 

@@ -30,19 +30,24 @@ int main() {
     // Program UI: Library Management System
     while(1){
         // MENU
+        printf("\n<----- Select Option ----->");
         printf("\n1. Book Management\n");
         printf("2. User Management\n");
+        printf("3. Exit Program\n");
+        printf("Enter your choice: ");
         scanf("%d", &initialChoice);
         getchar();  // Consume newline left by scanf
 
         switch(initialChoice){
             case 1:
+                printf("\n<----- Select Option ----->");
                 printf("\n1. Insert Book\n");
                 printf("2. Delete Book\n");
                 printf("3. Search Book\n");
                 printf("4. List All Books\n");
                 printf("5. Borrow Book\n");
                 printf("6. Return Book\n");
+                printf("Enter your choice: ");
                 scanf("%d", &bookChoice);
                 getchar();
 
@@ -105,7 +110,7 @@ int main() {
                             fgets(userName, sizeof(userName), stdin);
                             userName[strcspn(userName, "\n")] = '\0'; // Remove newline
 
-                            // userBookBorrow(usermap, userName, book);
+                            userBookBorrow(usermap, userName, book);
                         } else{
                             printf("Book not found in library!\n");
                         }
@@ -116,14 +121,16 @@ int main() {
                         fgets(userName, sizeof(userName), stdin);
                         userName[strcspn(userName, "\n")] = '\0'; // Remove newline
 
-                        // userBookReturn(usermap, userName);
+                        userBookReturn(usermap, userName);
                         break;
                     
-                    default: printf("Enter a valid option!\n");
+                    default: 
+                        printf("Enter a valid option!\n");
                 }
                 break;
 
             case 2:
+                printf("\n<----- Select Option ----->");
                 printf("\n1. Register User\n");
                 printf("2. Delete User\n");
                 printf("3. Search User\n");
@@ -134,11 +141,12 @@ int main() {
                     
                 }
                 break;
+            
+            case 3:
+                return 0;
 
             default:
                 printf("Invalid Choice!");
         }
     }
-
-    return 0;
 }
