@@ -8,7 +8,11 @@ include_directories(include)
 add_executable(
 	my_app
 	src/main.c
-	src/book.c
+	src/user.c
 	src/functions.c
 	src/hashmap.c
+	src/borrower_queue.c
+	src/book_list.c
+	src/book_tree.c
+	src/book.c
 )

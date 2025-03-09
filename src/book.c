@@ -1,21 +1,21 @@
 #include "book.h"
 
-char getInitialChar(Book* book)
+char getInitialBookChar(Book* book)
 {
     return book->name[0];
 }
 
 // Function to Create Book
-Book* initBook()
+void initBook(Book** book)
 {
-    // Dynamically Allocate memory for book
-    Book *book = (Book*)malloc(sizeof(Book));
+    initBorrowerQueue(*book);
+    (*book)->isAvailable = true;
 
     // Declaration of necessary Data Types
     int year;
-    char name[50]; 
-    char author[50]; 
-    char genre[50];
+    char name[100]; 
+    char author[100]; 
+    char genre[100];
 
     // Input Section
     printf("Enter name: ");
@@ -35,20 +35,24 @@ Book* initBook()
     getchar();  // Consume newline left by scanf
 
     // Struct member initialization section
-    book->yearOfPublication = year;
-    strcpy(book->name, name);
-    strcpy(book->author, author);
-    strcpy(book->genre, genre);
+    (*book)->yearOfPublication = year;
+    strcpy((*book)->name, name);
+    strcpy((*book)->author, author);
+    strcpy((*book)->genre, genre);
+    printf("\n");
+}
 
-    return book;
+void showBookStatus(Book* book){
+    printf("%s\n", (book->isAvailable ? "Available" : "Taken"));
 }
 
 // Function to display Book
-void displayBookInfo(Book *book)
+void displayBookInfo(Book* book)
 {
     printf("<----- Book Info ----->\n");
     printf("Title: %s\n", book->name);
     printf("Author: %s\n", book->author);
     printf("Genre: %s\n", book->genre);
     printf("Year Of Publication: %d\n", book->yearOfPublication);
+    showBookStatus(book);
 }

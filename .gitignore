@@ -1,6 +1,7 @@
 .vscode
 
 /src/test.exe
+/test/
 /src/main.exe
 
 # Ignore build artifacts
