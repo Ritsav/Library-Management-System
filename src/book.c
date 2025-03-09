@@ -13,9 +13,9 @@ void initBook(Book** book)
 
     // Declaration of necessary Data Types
     int year;
-    char name[100]; 
-    char author[100]; 
-    char genre[100];
+    char name[50]; 
+    char author[50]; 
+    char genre[50];
 
     // Input Section
     printf("Enter name: ");

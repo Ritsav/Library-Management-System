@@ -22,20 +22,8 @@ void initHashMap(BookHashMap* hashmap)
 void insertBookInMap(BookHashMap* hashmap, Book* book)
 {
     // HashMap needs to be allocated in main and sent over
-    printf("HEH??");
     char key = getInitialBookChar(book);
-    printf("HEy?");
     int value = hashFunction(key);
-    printf("OKAYlla");
-
-    AVLBook* root = (AVLBook*)malloc(sizeof(AVLBook));
-    printf("OKAYlla");
-
-
-    if(hashmap->map[value] == NULL){
-        hashmap->map[value] = root;
-        printf("OKAYlla");
-    }
 
     insertBookInTree(&hashmap->map[value], book);
 }
