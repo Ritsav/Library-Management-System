@@ -1,21 +1,19 @@
 #include "user.h"
 
 // Function to create a new user record
-User* initUser(){
-    // Dynamically malloc memory
-    User* user = (User*)malloc(sizeof(User));
-    initBookList(user->bookCatalogStart);
+void initUser(User** user){
+    initBookList((*user)->bookCatalogStart);
+    (*user)->book = NULL;
+    (*user)->hasTakenBook = false;
     
     printf("Enter Name: ");
-    fgets(user->name, sizeof(user->name), stdin);
-    user->name[strcspn(user->name, "\n")] = '\0';  // Remove newline
+    fgets((*user)->name, sizeof((*user)->name), stdin);
+    (*user)->name[strcspn((*user)->name, "\n")] = '\0';  // Remove newline
 
     printf("Enter Address: ");
-    fgets(user->address, sizeof(user->address), stdin);
-    user->address[strcspn(user->address, "\n")] = '\0';
+    fgets((*user)->address, sizeof((*user)->address), stdin);
+    (*user)->address[strcspn((*user)->address, "\n")] = '\0';
     printf("\n");
-
-    return user;
 }
 
 // Function to display the history of books the user has read
@@ -33,8 +31,10 @@ void displayUserInfo(User* user){
     if(user->hasTakenBook){
         printf("Book: %s\n", user->book->name);
     }
+    printf("\n <----- User's Book Catalog ----->\n");
+    displayCatalog(user);
 }
 
-char getInitialChar(User* user) {
+char getInitialUserChar(User* user) {
     return user->name[0];  
 }

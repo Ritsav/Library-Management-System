@@ -10,28 +10,34 @@ void enqueueUser(Book* book, User* user)
 {
     BorrowerQueue* temp = (BorrowerQueue*)malloc(sizeof(BorrowerQueue));
     temp->user = user;
+    temp->next = NULL;
 
     // Deal with underflow
-    if(book->front == book->rear){
+    if(book->front == NULL){    
         book->front = temp;
-        book->rear = temp->next;
+        book->rear = temp;
+    } else{
+        book->rear->next = temp;
+        book->rear = temp;
     }
-
-    book->rear = temp;
-    temp->next = book->rear;
 }
 
 void dequeueUser(Book* book)
 {
-    // Deal with underflow
-    if(book->front == book->rear){
-        printf("No users currently in the queue!");
+    // Deal with underflow (empty queue case)
+    if (book->front == NULL) {
+        printf("No users currently in the queue!\n");
         return;
     }
 
     BorrowerQueue* temp = book->front;
-    
     book->front = book->front->next;
+
+    // If the queue becomes empty, set rear to NULL
+    if (book->front == NULL) {
+        book->rear = NULL;
+    }
+
     free(temp);
 }
 
@@ -39,10 +45,15 @@ void displayBorrowerQueue(Book* book)
 {
     BorrowerQueue* temp = book->front;
 
+    if (temp == NULL) {
+        printf("The queue is empty.\n");
+        return;
+    }
+
     printf("<----- Borrower's Queue ----->\n");
-    while(temp != book->rear){
+    while(temp != NULL){
         printf("%s-->\t", temp->user->name);
         temp = temp->next;
     }
-    printf("\n");
+    printf("END\n");
 }

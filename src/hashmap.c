@@ -32,6 +32,8 @@ void listAllBooksInMap(BookHashMap* hashmap)
 {
     int counter = 0; // To count if there are no books in the library
     for(int i = 0; i < 26; i++){
+        counter++;
+
         if(hashmap->map[i] == NULL){
             continue;
         }
@@ -91,10 +93,67 @@ void freeHashMap(BookHashMap* hashmap)
 
 void initUserHashMap(UserHashMap* hashmap)
 {
-    hashmap = (UserHashMap*)malloc(sizeof(UserHashMap));
-
     // Initialize the trees
     for(int i = 0; i < 26; i++){
         hashmap->map[i] = NULL;
     }
+}
+
+void insertUserInMap(UserHashMap* hashmap, User* user)
+{
+    // HashMap needs to be allocated in main and sent over
+    char key = getInitialUserChar(user);
+    int value = hashFunction(key);
+
+    insertUserInTree(&hashmap->map[value], user);
+}
+
+void listAllUsersInMap(UserHashMap* hashmap)
+{
+    int counter = 0; // To count if there are no books in the library
+    for(int i = 0; i < 26; i++){
+        counter++;
+
+        if(hashmap->map[i] == NULL){
+            continue;
+        }
+
+        printf("\n");
+        printf("For user names starting from letter %c:\n", i + 'A');
+
+        displayUserTree(hashmap->map[i]);
+        printf("\n");
+    }
+
+    if(counter == 0){
+        printf("Currently no users registered in the library!");
+    }
+
+    printf("\n\n");
+}
+
+User* searchUserInBucket(UserHashMap* hashmap, char userName[])
+{
+    int value = hashFunction(userName[0]);
+
+    return searchUserInTree(hashmap->map[value], userName);
+}
+
+void freeUserHashMap(UserHashMap* hashmap)
+{
+    // Free all the buckets associated with the hashmap
+    for(int i = 0; i < 26; i++){
+        printf("\n");
+
+        if(hashmap->map[i] == NULL){
+            continue;
+        }
+
+        freeUserTree(hashmap->map[i]);
+
+        printf("\n\n");
+    }
+
+    // Free Hashmap after freeing all the buckets
+    free(hashmap);
 }

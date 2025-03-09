@@ -15,4 +15,5 @@ add_executable(
 	src/book_list.c
 	src/book_tree.c
 	src/book.c
+	src/user_tree.c
 )

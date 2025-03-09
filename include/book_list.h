@@ -15,7 +15,8 @@ typedef struct BookList
 } BookList;
 
 void initBookList(BookList*);
-void insertBookList(BookList*, Book*);
+void insertBookList(BookList**, Book*);
 void displayBookList(BookList*);
+void freeBookCatalog(BookList*);
 
 #endif

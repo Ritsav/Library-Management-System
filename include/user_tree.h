@@ -2,10 +2,11 @@
 #define USER_TREE_H
 
 #include<stdio.h>
-#include "user.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "book_list.h"
+#include "user.h"
 
 // AVLTree for books Structure
 typedef struct AVLUser{
@@ -23,9 +24,9 @@ void displayUserTree(AVLUser*);
 void freeUserTree(AVLUser*); // Also frees the book
 
 // AVLTree Rebalancing Functions
- int maxUser(int a, int b);
- AVLUser* minValueNodeUser(AVLUser* node);
- int getBalanceFactorUser(AVLUser* node);
- void updateHeightUser(AVLUser* node);
+int maxUser(int a, int b);
+AVLUser* minValueNodeUser(AVLUser* node);
+int getBalanceFactorUser(AVLUser* node);
+void updateHeightUser(AVLUser* node);
 
 #endif

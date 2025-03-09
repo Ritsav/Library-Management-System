@@ -31,9 +31,9 @@ typedef struct UserHashMap
     AVLUser* map[26];
 } UserHashMap;
 
-// Functions for BookMap
+// Functions for UserMap
 void initUserHashMap(UserHashMap*);
-void insertUserInMap(UserHashMap*, Book*);
+void insertUserInMap(UserHashMap*, User*);
 void listAllUsersInMap(UserHashMap*);
 void listAllUsersInBucket(UserHashMap*, char);
 User* searchUserInBucket(UserHashMap*, char[]);

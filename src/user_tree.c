@@ -1,9 +1,10 @@
 #include "user_tree.h"
 
 // Function to get the maximum of two integers
-int maxUser(int a,int b){
-    return (a > b) ? a:b;
+int maxUser(int a, int b) {
+    return (a > b) ? a : b;
 }
+
 AVLUser* createUserNode(User* user) {
     AVLUser* newNode = (AVLUser*)malloc(sizeof(AVLUser));
     newNode->user = user;
@@ -13,22 +14,22 @@ AVLUser* createUserNode(User* user) {
     return newNode;
 }
 
-int getHeight(AVLUser* node) {
+int getUserHeight(AVLUser* node) {
     if (node == NULL) return 0;
     return node->height;
 }
 
 void updateHeightUser(AVLUser* node) {
     if (node == NULL) return;
-    node->height = 1 + max(getHeight(node->left), getHeight(node->right));
+    node->height = 1 + maxUser(getUserHeight(node->left), getUserHeight(node->right));
 }
 
 int getBalanceFactorUser(AVLUser* node) {
     if (node == NULL) return 0;
-    return getHeight(node->left) - getHeight(node->right);
+    return getUserHeight(node->left) - getUserHeight(node->right);
 }
 
-AVLUser* rightRotate(AVLUser* y) {
+AVLUser* rightUserRotate(AVLUser* y) {
     AVLUser* x = y->left;
     AVLUser* T2 = x->right;
 
@@ -41,7 +42,7 @@ AVLUser* rightRotate(AVLUser* y) {
     return x;
 }
 
-AVLUser* leftRotate(AVLUser* x) {
+AVLUser* leftUserRotate(AVLUser* x) {
     AVLUser* y = x->right;
     AVLUser* T2 = y->left;
 
@@ -75,22 +76,22 @@ void insertUserInTree(AVLUser** node, User* user) {
 
     // Left Left Case
     if (balance > 1 && strcmp(user->name, (*node)->left->user->name) < 0)
-        *node = rightRotate(*node);
+        *node = rightUserRotate(*node);
 
     // Right Right Case
     if (balance < -1 && strcmp(user->name, (*node)->right->user->name) > 0)
-        *node = leftRotate(*node);
+        *node = leftUserRotate(*node);
 
     // Left Right Case
     if (balance > 1 && strcmp(user->name, (*node)->left->user->name) > 0) {
-        (*node)->left = leftRotate((*node)->left);
-        *node = rightRotate(*node);
+        (*node)->left = leftUserRotate((*node)->left);
+        *node = rightUserRotate(*node);
     }
 
     // Right Left Case
     if (balance < -1 && strcmp(user->name, (*node)->right->user->name) < 0) {
-        (*node)->right = rightRotate((*node)->right);
-        *node = leftRotate(*node);
+        (*node)->right = rightUserRotate((*node)->right);
+        *node = leftUserRotate(*node);
     }
 }
 
@@ -108,47 +109,51 @@ void deleteUserInTree(AVLUser** root, char userName[]) {
             AVLUser* temp = (*root)->left ? (*root)->left : (*root)->right;
 
             if (temp == NULL) {
-                temp = *root;
+                freeBookCatalog((*root)->user->bookCatalogStart);
+                free((*root)->user); // Free the user data first
+                free(*root);
                 *root = NULL;
             } else {
-                *(*root) = *temp;
+                **root = *temp;  // Copy contents of temp to root
+                free(temp);
             }
-
-            // Free the user data also
-            free((*root)->user);
-            free(temp);
         } else {
-            // Node with two children
+            // Node with two children: Get inorder successor
             AVLUser* temp = minValueNodeUser((*root)->right);
-            (*root)->user = temp->user;
+
+            // Properly allocate memory and copy user data
+            User* newUser = (User*)malloc(sizeof(User));
+            if (newUser == NULL) {
+                printf("Memory allocation failed\n");
+                return;
+            }
+            *newUser = *(temp->user);  // Deep copy user data
+
+            free((*root)->user);  // Free existing user data
+            (*root)->user = newUser;  // Assign newly allocated user
+
             deleteUserInTree(&(*root)->right, temp->user->name);
         }
     }
 
     if (*root == NULL) return;
 
+    // Update height and balance the AVL tree
     updateHeightUser(*root);
 
     int balance = getBalanceFactorUser(*root);
 
-    // Left Left Case
+    // Balance the tree using AVL rotations
     if (balance > 1 && getBalanceFactorUser((*root)->left) >= 0)
-        *root = rightRotate(*root);
-
-    // Left Right Case
-    if (balance > 1 && getBalanceFactorUser((*root)->left) < 0) {
-        (*root)->left = leftRotate((*root)->left);
-        *root = rightRotate(*root);
-    }
-
-    // Right Right Case
-    if (balance < -1 && getBalanceFactorUser((*root)->right) <= 0)
-        *root = leftRotate(*root);
-
-    // Right Left Case
-    if (balance < -1 && getBalanceFactorUser((*root)->right) > 0) {
-        (*root)->right = rightRotate((*root)->right);
-        *root = leftRotate(*root);
+        *root = rightUserRotate(*root);
+    else if (balance > 1 && getBalanceFactorUser((*root)->left) < 0) {
+        (*root)->left = leftUserRotate((*root)->left);
+        *root = rightUserRotate(*root);
+    } else if (balance < -1 && getBalanceFactorUser((*root)->right) <= 0)
+        *root = leftUserRotate(*root);
+    else if (balance < -1 && getBalanceFactorUser((*root)->right) > 0) {
+        (*root)->right = rightUserRotate((*root)->right);
+        *root = leftUserRotate(*root);
     }
 }
 
@@ -183,11 +188,12 @@ void displayUserTree(AVLUser* root) { // inorder traversal
     }
 }
 
-void freeUserTree(AVLUser* root){
-    if(root == NULL) return;
+void freeUserTree(AVLUser* root) {
+    if (root == NULL) return;
 
     freeUserTree(root->left);
     
+    freeBookCatalog(root->user->bookCatalogStart);
     free(root->user);
     free(root);
     

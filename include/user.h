@@ -19,9 +19,9 @@ typedef struct User{
     BookList *bookCatalogStart;
 } User;
 
-User* initUser(); 
+void initUser(User**); 
 void displayCatalog(User*);
 void displayUserInfo(User*);
-char getInitialChar(User*);
+char getInitialUserChar(User*);
 
 #endif
