@@ -9,7 +9,7 @@
 
 // AVLTree for books Structure
 typedef struct AVLUser{
-    Book* book;
+    User* user;
     struct AVLUser* left;
     struct AVLUser* right;
     int height;
@@ -23,9 +23,9 @@ void displayUserTree(AVLUser*);
 void freeUserTree(AVLUser*); // Also frees the book
 
 // AVLTree Rebalancing Functions
-static int maxUser(int a, int b);
-static AVLUser* minValueNodeUser(AVLUser* node);
-static int getBalanceFactorUser(AVLUser* node);
-static void updateHeightUser(AVLUser* node);
+ int maxUser(int a, int b);
+ AVLUser* minValueNodeUser(AVLUser* node);
+ int getBalanceFactorUser(AVLUser* node);
+ void updateHeightUser(AVLUser* node);
 
 #endif
