@@ -7,6 +7,9 @@
 #include<stdbool.h>
 #include "borrower_queue.h"
 
+// Forward declare
+typedef struct BorrowerQueue BorrowerQueue;
+
 typedef struct Book
 {
     int yearOfPublication;
@@ -18,8 +21,8 @@ typedef struct Book
     BorrowerQueue* rear;
 } Book;
 
-Book* initBook();
+void initBook(Book**);
 void displayBookInfo(Book*);
-char getInitialChar(Book*);
+char getInitialBookChar(Book*);
 
 #endif

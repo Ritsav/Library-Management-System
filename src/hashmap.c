@@ -11,18 +11,33 @@ int hashFunction(char key)
     return (key % 26);
 }
 
+void initHashMap(BookHashMap* hashmap)
+{
+    // Initialize the trees
+    for(int i = 0; i < 26; i++){
+        hashmap->map[i] = NULL;
+    }
+}
+
 void insertBookInMap(BookHashMap* hashmap, Book* book)
 {
     // HashMap needs to be allocated in main and sent over
-    int value = hashFunction(getInitialChar(book));
+    printf("HEH??");
+    char key = getInitialBookChar(book);
+    printf("HEy?");
+    int value = hashFunction(key);
+    printf("OKAYlla");
 
     AVLBook* root = (AVLBook*)malloc(sizeof(AVLBook));
+    printf("OKAYlla");
+
 
     if(hashmap->map[value] == NULL){
         hashmap->map[value] = root;
+        printf("OKAYlla");
     }
 
-    insertBookInTree(root, book);
+    insertBookInTree(&hashmap->map[value], book);
 }
 
 void listAllBooksInMap(BookHashMap* hashmap)
@@ -36,8 +51,9 @@ void listAllBooksInMap(BookHashMap* hashmap)
         }
 
         displayBookTree(hashmap->map[i]);
-        printf("\n\n");
+        printf("\n");
     }
+    printf("\n\n");
 }
 
 void listAllBooksInBucket(BookHashMap* hashmap, char letter){
@@ -49,3 +65,42 @@ void listAllBooksInBucket(BookHashMap* hashmap, char letter){
     }
     displayBookTree(hashmap->map[value]);
 };
+
+Book* searchBookInBucket(BookHashMap* hashmap, char bookName[])
+{
+    int value = hashFunction(bookName[0]);
+
+    return searchBookInTree(hashmap->map[value], bookName);
+}
+
+void freeHashMap(BookHashMap* hashmap)
+{
+    // Free all the buckets associated with the hashmap
+    for(int i = 0; i < 26; i++){
+        printf("\n");
+
+        if(hashmap->map[i] == NULL){
+            continue;
+        }
+
+        freeBookTree(hashmap->map[i]);
+
+        printf("\n\n");
+    }
+
+    // Free Hashmap after freeing all the buckets
+    free(hashmap);
+}
+
+
+// <------ UserHashMap Section ----->
+
+void initUserHashMap(UserHashMap* hashmap)
+{
+    hashmap = (UserHashMap*)malloc(sizeof(UserHashMap));
+
+    // Initialize the trees
+    for(int i = 0; i < 26; i++){
+        hashmap->map[i] = NULL;
+    }
+}

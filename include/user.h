@@ -7,6 +7,10 @@
 #include "book.h"
 #include "book_list.h"
 
+// Forward Declare
+typedef struct Book Book;
+typedef struct BookList BookList;
+
 typedef struct User{
     char name[50];
     char address[50];

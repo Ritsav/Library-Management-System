@@ -6,7 +6,8 @@
 #include "functions.h"
 #include "book.h"
 #include "book_tree.h"
-// #include "user.h"
+#include "user.h"
+#include "user_tree.h"
 
 // BookMap struct: Key based on starting alphabet
 typedef struct BookHashMap
@@ -17,14 +18,25 @@ typedef struct BookHashMap
 int hashFunction(char);
 
 // Functions for BookMap
-void insertBookInMap(BookHashMap* ,Book*);
+void initHashMap(BookHashMap*);
+void insertBookInMap(BookHashMap*, Book*);
 void listAllBooksInMap(BookHashMap*);
 void listAllBooksInBucket(BookHashMap*, char);
+Book* searchBookInBucket(BookHashMap*, char[]);
+void freeHashMap(BookHashMap*);
 
 // UserMap struct: Key based on starting alphabet
 typedef struct UserHashMap
 {
-    // UserTree* map[26];
+    AVLUser* map[26];
 } UserHashMap;
+
+// Functions for BookMap
+void initUserHashMap(UserHashMap*);
+void insertUserInMap(UserHashMap*, Book*);
+void listAllUsersInMap(UserHashMap*);
+void listAllUsersInBucket(UserHashMap*, char);
+User* searchUserInBucket(UserHashMap*, char[]);
+void freeUserHashMap(UserHashMap*);
 
 #endif

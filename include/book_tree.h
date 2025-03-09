@@ -8,18 +8,17 @@
 #include <string.h>
 
 // AVLTree for books Structure
-struct avl_book{
+typedef struct AVLBook{
     Book* book;
-    struct avl_book* left;
-    struct avl_book* right;
+    struct AVLBook* left;
+    struct AVLBook* right;
     int height;
-};
-typedef struct avl_book AVLBook;
+} AVLBook;
 
 // Functions to perform Operations in the AVL tree
 void insertBookInTree(AVLBook**, Book*);
-void deleteBookInTree(AVLBook**, Book*);
-void searchBookInTree(AVLBook*, Book*);
+void deleteBookInTree(AVLBook**, char[]);
+Book* searchBookInTree(AVLBook*, char[]);
 void displayBookTree(AVLBook*);
 void freeBookTree(AVLBook*); // Also frees the book
 

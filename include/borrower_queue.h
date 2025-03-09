@@ -4,8 +4,12 @@
 #include<stdio.h>
 #include "user.h"
 
+// Forward declaration
+typedef struct User User;
+typedef struct Book Book;
+
 typedef struct BorrowerQueue{
-    BorrowerQueue* next;
+    struct BorrowerQueue* next;
     User* user;
 } BorrowerQueue;
 

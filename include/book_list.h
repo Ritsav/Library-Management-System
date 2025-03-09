@@ -6,6 +6,8 @@
 #include<stdlib.h>
 #include "book.h"
 
+typedef struct Book Book;  // Forward declaration
+
 typedef struct BookList
 {
    struct BookList *next;

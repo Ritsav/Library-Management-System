@@ -58,6 +58,7 @@ AVLBook* leftRotate(AVLBook* x) {
 void insertBookInTree(AVLBook** node, Book* book) {
     if (*node == NULL) {
         *node = createBookNode(book); // Set the new node directly
+        printf("The book is now available in the library.\n");
         return;
     }
 
@@ -94,14 +95,14 @@ void insertBookInTree(AVLBook** node, Book* book) {
     }
 }
 
-void deleteBookInTree(AVLBook** root, Book* book) {
+void deleteBookInTree(AVLBook** root, char bookName[]) {
     if (*root == NULL) return;
 
-    int cmp = strcmp(book->name, (*root)->book->name);
+    int cmp = strcmp(bookName, (*root)->book->name);
     if (cmp < 0)
-        deleteBookInTree(&(*root)->left, book);  // Pass address of left child
+        deleteBookInTree(&(*root)->left, bookName);  // Pass address of left child
     else if (cmp > 0)
-        deleteBookInTree(&(*root)->right, book);  // Pass address of right child
+        deleteBookInTree(&(*root)->right, bookName);  // Pass address of right child
     else {
         // Node with only one child or no child
         if ((*root)->left == NULL || (*root)->right == NULL) {
@@ -159,25 +160,26 @@ AVLBook* minValueNode(AVLBook* node) {
     return current;
 }
 
-void searchBookInTree(AVLBook* root, Book* book) {
-    if (root == NULL){
+Book* searchBookInTree(AVLBook* root, char bookName[]) {
+    if (root == NULL) {
         printf("\n\nBook not found in library!\n\n");
-        return;
+        return NULL;
     }
     
-    int cmp = strcmp(book->name, root->book->name);
-    if (cmp == 0)
-        displayBookInfo(book);
-    else if (cmp < 0)
-        searchBookInTree(root->left, book);
-    else
-        searchBookInTree(root->right, book);
+    int cmp = strcmp(bookName, root->book->name);
+    if (cmp == 0) {
+        return root->book;  // Return the found book
+    } 
+    else if (cmp < 0) 
+        return searchBookInTree(root->left, bookName);  // Return recursive call result
+    else 
+        return searchBookInTree(root->right, bookName);  // Return recursive call result
 }
 
 void displayBookTree(AVLBook* root) {
     if (root != NULL) {
         displayBookTree(root->left);
-        printf("Book: %s (Height: %d)\n", root->book->name, root->height);
+        printf("\tBook: %s\t", root->book->name, root->height);
         displayBookTree(root->right);
     }
 }
